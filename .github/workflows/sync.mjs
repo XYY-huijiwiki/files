@@ -40,3 +40,11 @@ while (true) {
 
 // write result to file ./dist/releases.json
 writeFileSync("./releases.json", JSON.stringify(releasesList, null, 2));
+
+// create a new folder `dist`
+if (!existsSync("./dist")) {
+  mkdirSync("./dist");
+}
+// move releases.json and index.html to dist
+renameSync("./releases.json", "./dist/releases.json");
+copyFileSync("./index.html", "./dist/index.html");
