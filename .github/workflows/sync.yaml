@@ -10,7 +10,14 @@ jobs:
       group: sync-files-info
       cancel-in-progress: true
     steps:
-      - run: npm i
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: "npm"
+      - run: npm ci
       # run the sync script
       - run: node ./.github/workflows/sync.mjs
         env:
