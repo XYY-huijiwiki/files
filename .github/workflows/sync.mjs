@@ -39,4 +39,4 @@ while (true) {
 }
 
 // write result to file ./dist/releases.json
-writeFileSync("./dist/releases.json", JSON.stringify(releasesList, null, 2));
+writeFileSync("./releases.json", JSON.stringify(releasesList, null, 2));
