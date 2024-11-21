@@ -2,12 +2,12 @@ name: Sync files info
 on: release
 jobs:
   Sync-Files-Info:
-  runs-on: ubuntu-latest
-  steps:
-    - run: npm ci
-    # run the sync script
-    - run: node ./sync.mjs
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    # push current branch to the remote repository
-    - run: git push origin HEAD:main
+    runs-on: ubuntu-latest
+    steps:
+      - run: npm ci
+      # run the sync script
+      - run: node ./sync.mjs
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # push current branch to the remote repository
+      - run: git push origin HEAD:main
