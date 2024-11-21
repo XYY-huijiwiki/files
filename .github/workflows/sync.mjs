@@ -23,6 +23,7 @@ while (true) {
     return {
       id: release.id,
       tag_name: release.tag_name,
+      body: release.body,
       assets: release.assets.map((asset) => {
         return {
           id: asset.id,

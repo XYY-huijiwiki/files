@@ -6,7 +6,7 @@ jobs:
     steps:
       - run: npm ci
       # run the sync script
-      - run: node ./sync.mjs
+      - run: node ./.github/workflows/sync.mjs
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       # push current branch to the remote repository
