@@ -1,5 +1,11 @@
 import { Octokit } from "octokit";
-import { writeFileSync } from "fs";
+import {
+  writeFileSync,
+  existsSync,
+  mkdirSync,
+  renameSync,
+  copyFileSync,
+} from "fs";
 
 const octokit = new Octokit({
   auth: process.env.GITHUB_TOKEN,
