@@ -1,10 +1,16 @@
 name: Sync files info
-on: release
+on:
+  release:
+  workflow_dispatch: # Allow manual trigger from GitHub website
+
 jobs:
   Sync-Files-Info:
     runs-on: ubuntu-latest
+    concurrency: # Cancel in-progress workflows if a new one is triggered
+      group: sync-files-info
+      cancel-in-progress: true
     steps:
-      - run: npm ci
+      - run: npm i
       # run the sync script
       - run: node ./.github/workflows/sync.mjs
         env:
