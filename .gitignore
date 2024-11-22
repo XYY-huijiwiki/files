@@ -26,3 +26,8 @@ coverage
 *.njsproj
 *.sln
 *.sw?
+
+# ffmpeg executables
+ffmpeg.exe 
+ffplay.exe
+ffprobe.exe

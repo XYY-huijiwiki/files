@@ -5,7 +5,7 @@ on:
 
 # Sets the GITHUB_TOKEN permissions to allow deployment to GitHub Pages
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -25,7 +25,10 @@ jobs:
         with:
           node-version: 20
           cache: "npm"
+      - name: Set up FFmpeg
+        uses: FedericoCarboni/setup-ffmpeg@v3
       - run: npm ci
+      - run: npm install sharp # sharp is cross-platform sensitive
       # run the sync script
       - run: node ./.github/workflows/sync.mjs
         env:
