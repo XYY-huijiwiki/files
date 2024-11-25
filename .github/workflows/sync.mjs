@@ -15,40 +15,11 @@ let dev = process.env.GITHUB_ACTIONS === undefined;
 let octokit = new Octokit({
   auth: dev ? "" : process.env.GITHUB_TOKEN,
 });
-let releasesList = [];
-
-while (true) {
-  let { data } = await octokit.request("GET /repos/{owner}/{repo}/releases", {
-    owner: "XYY-huijiwiki",
-    repo: "files",
-    per_page: dev ? 1 : 100,
-    page: dev ? 445 : Math.ceil(releasesList.length / 100),
-    headers: {
-      "X-GitHub-Api-Version": "2022-11-28",
-    },
-  });
-  // remove useless data
-  let data_temp = data.map((release) => {
-    return {
-      id: release.id,
-      tag_name: release.tag_name,
-      html_url: release.html_url,
-      body: release.body,
-      assets: release.assets.map((asset) => {
-        return {
-          id: asset.id,
-          name: asset.name,
-          size: asset.size,
-          browser_download_url: asset.browser_download_url,
-          updated_at: asset.updated_at,
-          uploader: asset.uploader,
-        };
-      }),
-    };
-  });
-  releasesList = releasesList.concat(data_temp);
-  if (data.length === 0 || dev) break;
-}
+let releasesList = await octokit.paginate(octokit.rest.repos.listReleases, {
+  owner: "XYY-huijiwiki",
+  repo: "files",
+  per_page: 100,
+});
 
 // ======== assets format check ======== //
 for (let index = 0; index < releasesList.length; index++) {
