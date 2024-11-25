@@ -41,6 +41,7 @@ while (true) {
           size: asset.size,
           browser_download_url: asset.browser_download_url,
           updated_at: asset.updated_at,
+          uploader: asset.uploader,
         };
       }),
     };
