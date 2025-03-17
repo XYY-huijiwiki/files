@@ -1,15 +1,8 @@
 import { Octokit } from "octokit";
 import mime from "mime-types";
-import {
-  writeFileSync,
-  existsSync,
-  mkdirSync,
-  renameSync,
-  unlinkSync,
-  readFileSync,
-  copyFileSync,
-} from "fs";
+import { writeFileSync, unlinkSync, readFileSync } from "fs";
 import generateThumbnail from "./generateThumbnail.js";
+import ky from "ky";
 
 try {
   let dev = process.env.GITHUB_ACTIONS === undefined;
@@ -59,6 +52,13 @@ try {
     // STEP 1: skip existing files
     if (thumbs.find((x) => x.name === element.name)) {
       console.log(`Skipping ${element.name}`);
+      // update database for special cases
+      if (element.id === 0) {
+        await updateDatabase(
+          thumbs.find((x) => x.name === element.name)?.id as number,
+          element.id
+        );
+      }
       continue;
     }
 
@@ -99,10 +99,26 @@ try {
     );
     console.log(gh_res);
 
-    // STEP 6: clean up
+    // STEP 6: update database
+    await updateDatabase(gh_res.id, element.id);
+
+    // STEP 7: clean up
     unlinkSync(`./${element.name}`);
     unlinkSync(`./thumbs/${element.name}`);
   }
 } catch (err) {
   console.dir(err);
+}
+
+async function updateDatabase(thumb_id: number, id: number) {
+  const url = new URL(
+    "https://xyy-huijiwiki-gh-files-db.karsten-zhou-773.workers.dev/"
+  );
+  url.searchParams.append(
+    "query",
+    `UPDATE files SET thumb_id = ${thumb_id} WHERE id = ${id};`
+  );
+  url.searchParams.append("gh_token", process.env.GITHUB_TOKEN as string);
+  const response = await ky.get(url.toString());
+  console.log(await response.json());
 }
