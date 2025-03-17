@@ -21,3 +21,5 @@ jobs:
 
       - name: Run main script
         run: node dist/src/main.js
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
