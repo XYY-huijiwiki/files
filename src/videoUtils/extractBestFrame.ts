@@ -25,7 +25,6 @@ async function extractBestFrame(
       .output("NUL")
       .on("stderr", (stderrLine: string) => {
         // Parse FFmpeg output to find the first non-black frame
-        console.log(stderrLine);
         const frameMatch = stderrLine.match(/frame:(\d+)/);
         const blackMatch = stderrLine.match(/pblack:(\d+)/);
         const last_keyframeMatch = stderrLine.match(/last_keyframe:(\d+)/);
