@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "target": "ESNext", // 使用最新的 ECMAScript 特性
+    "module": "NodeNext", // 使用 Node.js 的模块系统
+    "moduleResolution": "NodeNext", // 使用 Node.js 的模块解析策略
+    "outDir": "dist", // 编译结果输出到 dist
+    "rootDir": ".", // 从当前目录开始编译
+    "strict": true, // 启用所有严格类型检查选项
+    "esModuleInterop": true, // 允许 CommonJS 和 ES 模块之间的互操作
+    "skipLibCheck": true, // 跳过库文件的类型检查
+    "forceConsistentCasingInFileNames": true, // 强制文件名大小写一致
+    "allowSyntheticDefaultImports": true, // 允许合成默认导入
+    "resolveJsonModule": true, // 允许导入 JSON 模块
+    "isolatedModules": true, // 确保每个文件可以单独编译
+    "noEmitOnError": true, // 如果有错误，不生成编译结果
+    "sourceMap": true // 生成 source map 文件
+  },
+  "include": ["**/*.ts"], // 包含当前目录及子目录的所有 .ts 文件
+  "exclude": ["node_modules", "dist"] // 排除 node_modules 和 dist 目录
+}

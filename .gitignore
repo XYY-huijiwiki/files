@@ -31,3 +31,6 @@ coverage
 ffmpeg.exe 
 ffplay.exe
 ffprobe.exe
+
+# generated thumbs
+thumbs
