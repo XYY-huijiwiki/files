@@ -1,15 +1,16 @@
 {
   "name": "files",
   "version": "1.0.0",
-  "main": "index.js",
   "scripts": {
-    "test": "tsc && node test/test.js"
+    "test": "bun test/test.js",
+    "typecheck": "tsc --noEmit"
   },
   "author": "",
   "type": "module",
   "license": "ISC",
   "description": "",
   "devDependencies": {
+    "@types/bun": "^1.2.21",
     "@types/ffmpeg-static": "^3.0.3",
     "@types/ffprobe-static": "^2.0.3",
     "@types/fluent-ffmpeg": "^2.1.27",

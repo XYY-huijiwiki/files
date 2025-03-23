@@ -1,13 +1,15 @@
 import { Octokit } from "octokit";
 import mime from "mime-types";
-import { writeFileSync, unlinkSync, readFileSync } from "fs";
+import { writeFileSync, unlinkSync, readFileSync } from "node:fs";
 import generateThumbnail from "./generateThumbnail.js";
 import ky from "ky";
 
+let dev = process.env.GITHUB_ACTIONS === undefined;
+let token = dev ? "" : process.env.GITHUB_TOKEN || "";
+
 try {
-  let dev = process.env.GITHUB_ACTIONS === undefined;
   let octokit = new Octokit({
-    auth: dev ? "" : process.env.GITHUB_TOKEN,
+    auth: token,
   });
 
   const URLS = {
@@ -47,11 +49,8 @@ try {
 
   for (let index = 0; index < assets.length; index++) {
     const element = assets[index];
-    console.log(`loop ${index + 1}/${assets.length}`);
-    console.log(`Processing ${element.name}`);
     // STEP 1: skip existing files
     if (thumbs.find((x) => x.name === element.name)) {
-      console.log(`Skipping ${element.name}`);
       // update database for special cases
       if (element.id === 0) {
         await updateDatabase(
@@ -71,6 +70,8 @@ try {
       console.log(`Skipping ${element.name} (${fileMime})`);
       continue;
     }
+
+    console.log(`Processing [${index + 1}/${assets.length}] ${element.name}`);
 
     // STEP 3: download file
     let fileBuffer = await (
@@ -108,17 +109,16 @@ try {
   }
 } catch (err) {
   console.dir(err);
+  process.exit(1);
 }
 
 async function updateDatabase(thumb_id: number, id: number) {
-  const url = new URL(
-    "https://xyy-huijiwiki-gh-files-db.karsten-zhou-773.workers.dev/"
-  );
+  const url = new URL("https://xyy-file-db.24218079.xyz/");
   url.searchParams.append(
     "query",
     `UPDATE files SET thumb_id = ${thumb_id} WHERE id = ${id};`
   );
-  url.searchParams.append("gh_token", process.env.GITHUB_TOKEN as string);
+  url.searchParams.append("gh_token", token);
   const response = await ky.get(url.toString());
   console.log(await response.json());
 }
