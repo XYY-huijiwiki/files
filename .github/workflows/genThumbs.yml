@@ -5,6 +5,7 @@ on:
 
 permissions:
   contents: write # Required for reading/writing releases
+  id-token: write
 
 jobs:
   build-and-deploy:
